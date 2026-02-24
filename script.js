@@ -15,18 +15,6 @@ const result = document.getElementById("result");
 const spinBtn = document.getElementById("spinBtn");
 const usernameInput = document.getElementById("username");
 
-// CREATE SPINNER SEGMENTS
-spinner.innerHTML = "";
-rewards.forEach((r, i) => {
-  const seg = document.createElement("div");
-  seg.classList.add("segment");
-  if (r === "1-Hit Sword") seg.classList.add("rare");
-  const angle = i * (360 / rewards.length);
-  seg.style.transform = `rotate(${angle}deg) translateX(-50%) translateY(-50%)`;
-  seg.innerText = r;
-  spinner.appendChild(seg);
-});
-
 // PAGE NAVIGATION
 function showPage(page) {
   document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
@@ -37,6 +25,7 @@ function showPage(page) {
 function dailyReward() {
   const user = usernameInput.value.trim();
   if (!user) return alert("Enter username");
+
   const key = "daily_" + user;
   const today = new Date().toDateString();
 
@@ -49,7 +38,7 @@ function dailyReward() {
   result.innerText = "✅ Daily reward claimed — use /daily";
 }
 
-// SPIN LOGIC
+// SPIN REWARD
 function startSpin() {
   const user = usernameInput.value.trim();
   if (!user) return alert("Enter username");
@@ -66,13 +55,13 @@ function startSpin() {
   spinNow();
 }
 
-// RESET SPINNER (FOR TESTING)
+// RESET SPINNER
 function resetSpin() {
   localStorage.removeItem("spin_" + usernameInput.value.trim());
   result.innerText = "🔄 Spinner reset. You can spin again!";
 }
 
-// SPIN FUNCTION
+// SPIN LOGIC
 function spinNow() {
   if (spinning) return;
   spinning = true;
@@ -80,13 +69,13 @@ function spinNow() {
   spinnerBox.classList.remove("hidden");
   spinBtn.classList.add("disabled");
 
-  // CALCULATE REWARD
+  // Determine reward index with rare 1-Hit Sword
   let index;
   const r = Math.random();
   if (r < 0.01) index = 3; // 1% chance 1-Hit Sword
   else index = Math.floor(Math.random() * rewards.length);
 
-  // ROTATE WHEEL
+  // ROTATE THE WHEEL (fixed conic-gradient spinner)
   const rotation = 360 * 5 + index * (360 / rewards.length);
   spinner.style.transition = "transform 2s ease-out";
   spinner.style.transform = `rotate(${rotation}deg)`;
