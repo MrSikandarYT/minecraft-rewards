@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Minecraft Rewards</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Minecraft Rewards</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -25,15 +25,17 @@
       <input id="username" placeholder="Minecraft Username">
 
       <div class="btns">
-        <button onclick="dailyReward()">Daily Reward</button>
-        <button onclick="startSpin()">Spin</button>
-        <button onclick="testSpin()">🧪 Test Spin</button>
+        <button id="dailyBtn" onclick="dailyReward()">Daily Reward</button>
+        <button id="spinBtn" onclick="startSpin()">Spin</button>
+        <button onclick="resetSpin()">🔄 Reset Spinner</button>
       </div>
 
-      <!-- SPINNER (HIDDEN FIRST) -->
+      <!-- SPINNER -->
       <div id="spinnerBox" class="hidden">
         <div class="pointer">▼</div>
-        <div id="spinner"></div>
+        <div id="spinner">
+          <!-- segments will be added dynamically -->
+        </div>
       </div>
 
       <p id="result"></p>
