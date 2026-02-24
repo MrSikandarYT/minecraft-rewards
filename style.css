@@ -81,6 +81,7 @@ button.disabled {
   display:flex;
   justify-content:center;
   align-items:center;
+  flex-direction:column;
 }
 
 .pointer {
@@ -91,5 +92,18 @@ button.disabled {
 
 canvas#wheel {
   border-radius:50%;
-  display:none; /* Hidden until spin */
+  display:none; /* Hidden until Show Spinner pressed */
 }
+
+#spinBtn {
+  margin-top:10px;
+  display:none; /* Hidden until Show Spinner pressed */
+  padding:10px 20px;
+  background:#f59e0b;
+  color:black;
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+#spinBtn:hover { background:#d97706; }
