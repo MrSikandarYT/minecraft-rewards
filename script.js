@@ -62,9 +62,18 @@ function showPage(page){
 showSpinnerBtn.addEventListener("click", ()=>{
   const user=usernameInput.value.trim();
   if(!user){ alert("Enter username"); return; }
+
+  // Make spinner and spin button visible
   wheelCanvas.style.display="block";
   spinBtn.style.display="block";
+
+  // Reset any previous transform to avoid first-time bug
+  wheelCanvas.style.transition = "none";
+  wheelCanvas.style.transform = "rotate(0deg)";
+
+  // Draw wheel fresh
   drawWheel();
+
   result.innerText="🎡 Spinner ready! Press Spin.";
 });
 
