@@ -3,7 +3,6 @@ const message = document.getElementById("message");
 
 let spinning = false;
 
-// rewards in order of wheel
 const rewards = [
   "Netkit",
   "Try Again",
@@ -13,29 +12,19 @@ const rewards = [
   "Try Again"
 ];
 
-// ===== LOCK SYSTEM =====
-function getLockKey(type) {
-  return type + "_lock";
-}
-
-// ===== DAILY REWARD =====
+// ===== DAILY LOCK =====
 function dailyReward() {
   const user = document.getElementById("username").value.trim();
-  if (!user) {
-    alert("Enter username");
-    return;
-  }
+  if (!user) return alert("Enter username");
 
   const today = new Date().toDateString();
-  const last = localStorage.getItem(getLockKey("daily"));
-
-  if (last === today) {
+  if (localStorage.getItem("daily") === today) {
     message.innerText = "⏳ Daily reward already claimed";
     return;
   }
 
-  localStorage.setItem(getLockKey("daily"), today);
-  message.innerText = "🎁 Daily reward claimed — use /daily in server";
+  localStorage.setItem("daily", today);
+  message.innerText = "🎁 Daily reward claimed — use /daily";
 }
 
 // ===== SPIN =====
@@ -43,32 +32,28 @@ function spinReward() {
   if (spinning) return;
 
   const user = document.getElementById("username").value.trim();
-  if (!user) {
-    alert("Enter username");
-    return;
-  }
+  if (!user) return alert("Enter username");
 
   const today = new Date().toDateString();
-  const lastSpin = localStorage.getItem(getLockKey("spin"));
-
-  if (lastSpin === today) {
+  if (localStorage.getItem("spin") === today) {
     message.innerText = "⏳ Spin already used today";
     return;
   }
 
   spinning = true;
-  localStorage.setItem(getLockKey("spin"), today);
+  localStorage.setItem("spin", today);
 
-  // weighted result (1-Hit Sword VERY rare)
+  // weighted chance (1-hit sword very rare)
   let index;
-  const rand = Math.random();
-
-  if (rand < 0.01) index = 3;        // 1% chance
+  const r = Math.random();
+  if (r < 0.01) index = 3; // 1%
   else index = Math.floor(Math.random() * rewards.length);
 
-  const angle = 360 * 5 + (360 / rewards.length) * index;
+  const degreesPer = 360 / rewards.length;
+  const rotation =
+    360 * 5 + (rewards.length - index) * degreesPer;
 
-  wheel.style.transform = `rotate(${angle}deg)`;
+  wheel.style.transform = `rotate(${rotation}deg)`;
 
   setTimeout(() => {
     message.innerText = `🎉 You won: ${rewards[index]} — use /spin`;
