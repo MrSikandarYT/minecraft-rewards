@@ -9,6 +9,9 @@ const result = document.getElementById("result");
 const wheelCanvas = document.getElementById("wheel");
 const ctx = wheelCanvas.getContext("2d");
 
+// API URL
+const API_URL = "https://nodejs.sikandaralisika.repl.co/reward";
+
 let spinning = false;
 let rotation = 0;
 
@@ -22,7 +25,7 @@ const rewards = [
   {text:"Try Again", emoji:"❌"}
 ];
 
-// Draw wheel function
+// Draw wheel
 function drawWheel(){
   const segments = rewards.length;
   const angle = 2*Math.PI/segments;
@@ -53,16 +56,14 @@ function showPage(page){
   result.innerText="";
 }
 
-// Spinner button
+// Show spinner button
 showSpinnerBtn.addEventListener("click", ()=>{
   const user=usernameInput.value.trim();
   if(!user){ alert("Enter username"); return; }
 
-  // Show spinner and spin button
   wheelCanvas.style.display = "block";
   spinBtn.style.display = "block";
 
-  // Reset wheel for fresh spin
   wheelCanvas.style.transition="none";
   wheelCanvas.style.transform="rotate(0deg)";
   rotation = 0;
@@ -85,11 +86,18 @@ dailyBtn.addEventListener("click",()=>{
   }
   localStorage.setItem(key,today);
   result.innerText="✅ Daily reward claimed — use /daily";
-  wheelCanvas.style.display="none";
-  spinBtn.style.display="none";
+
+  // Send to API
+  fetch(API_URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({username:user,reward:"Daily Reward Coins"})
+  }).then(r=>r.json()).then(data=>{
+    if(data.success) console.log("Daily reward sent to Discord");
+  }).catch(console.error);
 });
 
-// Reset spin (test only)
+// Reset spin (test)
 resetBtn.addEventListener("click",()=>{
   const user=usernameInput.value.trim();
   if(!user){ alert("Enter username"); return; }
@@ -113,10 +121,9 @@ spinBtn.addEventListener("click",()=>{
   spinning=true;
   spinBtn.classList.add("disabled");
 
-  // Determine reward index with rare sword
   let index;
   const r = Math.random();
-  if(r<0.01) index=3; // 1% 1-Hit Sword
+  if(r<0.01) index=3; // 1% chance for 1-Hit Sword
   else index=Math.floor(Math.random()*rewards.length);
 
   const spins=6;
@@ -126,8 +133,18 @@ spinBtn.addEventListener("click",()=>{
   wheelCanvas.style.transform=`rotate(${rotation}deg)`;
 
   setTimeout(()=>{
-    result.innerText=`🎉 You won: ${rewards[index].emoji} ${rewards[index].text} — use /spin`;
+    const rewardText = `${rewards[index].emoji} ${rewards[index].text}`;
+    result.innerText=`🎉 You won: ${rewardText} — use /spin`;
     spinning=false;
     spinBtn.classList.remove("disabled");
+
+    // Send reward to API
+    fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({username:user,reward:rewardText})
+    }).then(r=>r.json()).then(data=>{
+      if(data.success) console.log("Reward sent to Discord");
+    }).catch(console.error);
   },8000);
 });
