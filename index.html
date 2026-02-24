@@ -3,57 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <title>Minecraft Rewards</title>
-<link rel="stylesheet" href="style.css">
+<style>
+body {
+  margin:0;
+  font-family: Arial;
+  background:#111;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:100vh;
+}
+
+.container {
+  display:flex;
+  margin-top:20px;
+}
+
+.menu {
+  width:200px;
+  background:#1b1b1b;
+  padding:10px;
+}
+
+.menu button {
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  background:#333;
+  border:none;
+  color:white;
+  cursor:pointer;
+}
+
+.menu button:hover { background:#555; }
+
+.content {
+  flex:1;
+  padding:20px;
+}
+
+.page { display:none; }
+.page.active { display:block; }
+
+input { padding:10px; width:200px; margin-bottom:10px; }
+button { margin:5px; padding:10px 20px; cursor:pointer; }
+button.disabled { background:#777; cursor:not-allowed; }
+
+#wheelContainer {
+  position:relative;
+  width:400px;
+  height:400px;
+  margin-top:20px;
+}
+
+#wheel {
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:8px solid #333;
+  background: conic-gradient(
+    #f44336 0deg 60deg,
+    #ff9800 60deg 120deg,
+    #ffeb3b 120deg 180deg,
+    #4caf50 180deg 240deg,
+    #2196f3 240deg 300deg,
+    #9c27b0 300deg 360deg
+  );
+  transition: transform 8s cubic-bezier(0.25,0.1,0.25,1);
+}
+
+.pointer {
+  position:absolute;
+  top:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:30px;
+}
+
+#result { margin-top:20px; font-size:20px; }
+</style>
 </head>
 <body>
 
 <div class="container">
-
-  <!-- LEFT MENU -->
   <div class="menu">
     <button onclick="showPage('rewards')">🎁 Rewards</button>
     <button onclick="showPage('discord')">💬 Discord</button>
     <button onclick="showPage('about')">ℹ️ About</button>
   </div>
 
-  <!-- CONTENT -->
   <div class="content">
-
-    <!-- REWARDS PAGE -->
-    <div id="rewards" class="page">
+    <div id="rewards" class="page active">
       <h2>Rewards</h2>
       <input id="username" placeholder="Minecraft Username">
-      
-      <div class="btns">
+      <div>
         <button id="dailyBtn" onclick="dailyReward()">Daily Reward</button>
-        <button id="spinBtn" onclick="startSpin()">Spin</button>
+        <button id="spinBtn">Spin</button>
         <button onclick="resetSpin()">🔄 Reset Spinner</button>
       </div>
 
-      <div id="spinnerBox" class="hidden">
+      <div id="wheelContainer">
         <div class="pointer">▼</div>
-        <div id="spinner"></div>
+        <div id="wheel"></div>
       </div>
 
       <p id="result"></p>
     </div>
 
-    <!-- DISCORD PAGE -->
-    <div id="discord" class="page hidden">
+    <div id="discord" class="page">
       <h2>Discord</h2>
       <p>Join our Discord server for rewards!</p>
       <a href="#" target="_blank">Join Discord</a>
     </div>
 
-    <!-- ABOUT PAGE -->
-    <div id="about" class="page hidden">
+    <div id="about" class="page">
       <h2>About Server</h2>
       <p>This is a Minecraft rewards system.</p>
     </div>
-
   </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+const rewards = ["Netkit","Try Again","100k","1-Hit Sword","Try Again","Try Again"];
+const wheel = document.getElementById("wheel");
+const spinBtn = document.getElementById("spinBtn");
+const result = document.getElementById("result");
+const usernameInput = document.getElementById("username");
+let spinning = false;
+let rotation = 0;
+
+// PAGE NAV
+function showPage(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+}
+
+// DAILY REWARD
+function dailyReward(){
+  const user = usernameInput.value.trim();
+  if(!user) return alert("Enter username");
+  const key = "daily_"+user;
+  const today = new Date().toDateString();
+  if(localStorage.getItem(key)===today){
+    result.innerText = "⏳ Daily reward already claimed";
+    return;
+  }
+  localStorage.setItem(key,today);
+  result.innerText = "✅ Daily reward claimed — use /daily";
+}
+
+// SPIN REWARD
+spinBtn.addEventListener("click", ()=>{
+  const user = usernameInput.value.trim();
+  if(!user){ alert("Enter username"); return; }
+  const key = "spin_"+user;
+  const today = new Date().toDateString();
+  if(localStorage.getItem(key)===today){
+    result.innerText="⏳ You already spun today";
+    return;
+  }
+  localStorage.setItem(key,today);
+  spinWheel();
+});
+
+// RESET SPIN
+function resetSpin(){
+  const user = usernameInput.value.trim();
+  if(!user){ alert("Enter username"); return; }
+  localStorage.removeItem("spin_"+user);
+  result.innerText="🔄 Spinner reset, you can spin again!";
+}
+
+// SPIN LOGIC
+function spinWheel(){
+  if(spinning) return;
+  spinning=true;
+  spinBtn.classList.add("disabled");
+
+  // reward index with rare sword
+  let index;
+  const r = Math.random();
+  if(r<0.01) index=3; // 1% 1-Hit Sword
+  else index = Math.floor(Math.random()*rewards.length);
+
+  const spins=6;
+  rotation += spins*360 + index*(360/rewards.length) + Math.random()*10;
+
+  wheel.style.transition="transform 8s cubic-bezier(0.25,0.1,0.25,1)";
+  wheel.style.transform=`rotate(${rotation}deg)`;
+
+  setTimeout(()=>{
+    result.innerText=`🎉 You won: ${rewards[index]} — use /spin`;
+    spinning=false;
+    spinBtn.classList.remove("disabled");
+  },8000);
+}
+</script>
 </body>
 </html>
