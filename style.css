@@ -90,14 +90,13 @@ button.disabled {
   font-size:30px;
 }
 
-canvas#wheel {
+canvas#wheel, #spinBtn {
+  display: none;
   border-radius:50%;
-  display:none; /* Hidden until Show Spinner pressed */
 }
 
 #spinBtn {
   margin-top:10px;
-  display:none; /* Hidden until Show Spinner pressed */
   padding:10px 20px;
   background:#f59e0b;
   color:black;
