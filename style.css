@@ -1,84 +1,80 @@
 body {
-  background: #0f172a;
-  color: white;
+  margin: 0;
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  background: #111;
+  color: #fff;
 }
 
 .container {
-  text-align: center;
-  width: 320px;
+  display: flex;
+  height: 100vh;
 }
 
-input, button {
-  width: 100%;
+.menu {
+  width: 200px;
+  background: #1b1b1b;
   padding: 10px;
-  margin: 6px 0;
-  border-radius: 6px;
-  border: none;
 }
 
-button {
-  background: #22c55e;
-  font-weight: bold;
+.menu button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #333;
+  color: white;
+  border: none;
   cursor: pointer;
 }
 
-button:hover {
-  background: #16a34a;
+.menu button:hover {
+  background: #555;
 }
 
-.wheel-wrapper {
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+input {
+  padding: 10px;
+  width: 250px;
+  margin-bottom: 10px;
+}
+
+.btns button {
+  margin-right: 10px;
+  padding: 10px 15px;
+}
+
+/* SPINNER */
+#spinnerBox {
+  margin-top: 30px;
   position: relative;
-  margin: 20px auto;
-  width: 260px;
-  height: 260px;
+  width: 220px;
 }
 
 .pointer {
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  z-index: 10;
-}
-
-.wheel {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 6px solid #22c55e;
-  position: relative;
-  overflow: hidden;
-  transition: transform 4s ease-out;
-}
-
-.segment {
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  background: #1e293b;
-  transform-origin: 100% 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
   text-align: center;
-  padding: 5px;
+  font-size: 24px;
+  margin-bottom: -10px;
 }
 
-/* Correct angles (6 segments = 60deg each) */
-.segment:nth-child(1) { transform: rotate(0deg); }
-.segment:nth-child(2) { transform: rotate(60deg); }
-.segment:nth-child(3) { transform: rotate(120deg); }
-.segment:nth-child(4) { transform: rotate(180deg); }
-.segment:nth-child(5) { transform: rotate(240deg); }
-.segment:nth-child(6) { transform: rotate(300deg); }
-
-.rare {
-  background: #7c2d12;
+#spinner {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 10px solid #444;
+  background: conic-gradient(
+    #f44336 0deg 60deg,
+    #ff9800 60deg 120deg,
+    #ffeb3b 120deg 180deg,
+    #4caf50 180deg 240deg,
+    #2196f3 240deg 300deg,
+    #9c27b0 300deg 360deg
+  );
+  transition: transform 4s ease-out;
 }
