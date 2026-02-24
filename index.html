@@ -17,18 +17,24 @@
 
   <!-- Main Content -->
   <div class="content">
-    <div id="rewards" class="page active">
+    <div id="welcome" class="page active">
+      <h2>Welcome!</h2>
+      <p>Please select an option from the menu.</p>
+    </div>
+
+    <div id="rewards" class="page">
       <h2>Rewards</h2>
       <input id="username" placeholder="Minecraft Username">
       <div class="buttons">
         <button id="dailyBtn">🎁 Daily Reward</button>
-        <button id="spinBtn">🎡 Spin</button>
+        <button id="showSpinnerBtn">🎡 Show Spinner</button>
         <button id="resetBtn">🔄 Reset Spinner</button>
       </div>
 
       <div id="wheelContainer">
         <div class="pointer">▼</div>
         <canvas id="wheel" width="400" height="400"></canvas>
+        <button id="spinBtn">Spin</button>
       </div>
 
       <p id="result"></p>
