@@ -1,5 +1,6 @@
 // Elements
 const pages = document.querySelectorAll(".page");
+const showSpinnerBtn = document.getElementById("showSpinnerBtn");
 const spinBtn = document.getElementById("spinBtn");
 const resetBtn = document.getElementById("resetBtn");
 const dailyBtn = document.getElementById("dailyBtn");
@@ -26,6 +27,8 @@ function drawWheel(){
   const segments = rewards.length;
   const angle = 2*Math.PI/segments;
 
+  ctx.clearRect(0,0,400,400);
+
   for(let i=0;i<segments;i++){
     ctx.beginPath();
     ctx.moveTo(200,200);
@@ -49,7 +52,21 @@ drawWheel();
 function showPage(page){
   pages.forEach(p=>p.classList.remove("active"));
   document.getElementById(page).classList.add("active");
+  // Hide spinner when switching page
+  wheelCanvas.style.display="none";
+  spinBtn.style.display="none";
+  result.innerText="";
 }
+
+// Show spinner button
+showSpinnerBtn.addEventListener("click", ()=>{
+  const user=usernameInput.value.trim();
+  if(!user){ alert("Enter username"); return; }
+  wheelCanvas.style.display="block";
+  spinBtn.style.display="block";
+  drawWheel();
+  result.innerText="🎡 Spinner ready! Press Spin.";
+});
 
 // Daily reward
 dailyBtn.addEventListener("click",()=>{
@@ -59,15 +76,21 @@ dailyBtn.addEventListener("click",()=>{
   const today = new Date().toDateString();
   if(localStorage.getItem(key)===today){
     result.innerText="⏳ Daily reward already claimed";
+    // Hide spinner if daily pressed
+    wheelCanvas.style.display="none";
+    spinBtn.style.display="none";
     return;
   }
   localStorage.setItem(key,today);
   result.innerText="✅ Daily reward claimed — use /daily";
+  // Hide spinner
+  wheelCanvas.style.display="none";
+  spinBtn.style.display="none";
 });
 
 // Reset spin
 resetBtn.addEventListener("click",()=>{
-  const user = usernameInput.value.trim();
+  const user=usernameInput.value.trim();
   if(!user){ alert("Enter username"); return; }
   localStorage.removeItem("spin_"+user);
   result.innerText="🔄 Spinner reset, you can spin again!";
@@ -75,7 +98,7 @@ resetBtn.addEventListener("click",()=>{
 
 // Spin wheel
 spinBtn.addEventListener("click",()=>{
-  const user = usernameInput.value.trim();
+  const user=usernameInput.value.trim();
   if(!user){ alert("Enter username"); return; }
   const key = "spin_"+user;
   const today = new Date().toDateString();
@@ -88,7 +111,6 @@ spinBtn.addEventListener("click",()=>{
   if(spinning) return;
   spinning=true;
   spinBtn.classList.add("disabled");
-  wheelCanvas.style.display="block";
 
   // Determine reward index with rare sword
   let index;
