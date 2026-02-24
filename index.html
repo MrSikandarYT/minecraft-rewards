@@ -8,6 +8,7 @@
 <body>
 
 <div class="container">
+
   <!-- LEFT MENU -->
   <div class="menu">
     <button onclick="showPage('rewards')">🎁 Rewards</button>
@@ -18,37 +19,33 @@
   <!-- CONTENT -->
   <div class="content">
 
-    <!-- REWARDS -->
+    <!-- REWARDS PAGE -->
     <div id="rewards" class="page">
       <h2>Rewards</h2>
-
       <input id="username" placeholder="Minecraft Username">
-
+      
       <div class="btns">
         <button id="dailyBtn" onclick="dailyReward()">Daily Reward</button>
         <button id="spinBtn" onclick="startSpin()">Spin</button>
         <button onclick="resetSpin()">🔄 Reset Spinner</button>
       </div>
 
-      <!-- SPINNER -->
       <div id="spinnerBox" class="hidden">
         <div class="pointer">▼</div>
-        <div id="spinner">
-          <!-- segments will be added dynamically -->
-        </div>
+        <div id="spinner"></div>
       </div>
 
       <p id="result"></p>
     </div>
 
-    <!-- DISCORD -->
+    <!-- DISCORD PAGE -->
     <div id="discord" class="page hidden">
       <h2>Discord</h2>
       <p>Join our Discord server for rewards!</p>
       <a href="#" target="_blank">Join Discord</a>
     </div>
 
-    <!-- ABOUT -->
+    <!-- ABOUT PAGE -->
     <div id="about" class="page hidden">
       <h2>About Server</h2>
       <p>This is a Minecraft rewards system.</p>
