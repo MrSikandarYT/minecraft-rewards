@@ -8,26 +8,51 @@
 <body>
 
 <div class="container">
-  <h1>🎁 Minecraft Rewards</h1>
-
-  <input id="username" placeholder="Minecraft Username">
-
-  <button onclick="dailyReward()">🎁 Daily Reward</button>
-  <button onclick="spinReward()">🎡 Spin</button>
-
-  <div class="wheel-wrapper">
-    <div class="pointer">▼</div>
-    <div id="wheel" class="wheel">
-      <div class="segment">Netkit</div>
-      <div class="segment">Try Again</div>
-      <div class="segment">100k</div>
-      <div class="segment rare">1-Hit Sword</div>
-      <div class="segment">Try Again</div>
-      <div class="segment">Try Again</div>
-    </div>
+  <!-- LEFT MENU -->
+  <div class="menu">
+    <button onclick="showPage('rewards')">🎁 Rewards</button>
+    <button onclick="showPage('discord')">💬 Discord</button>
+    <button onclick="showPage('about')">ℹ️ About</button>
   </div>
 
-  <p id="message"></p>
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- REWARDS -->
+    <div id="rewards" class="page">
+      <h2>Rewards</h2>
+
+      <input id="username" placeholder="Minecraft Username">
+
+      <div class="btns">
+        <button onclick="dailyReward()">Daily Reward</button>
+        <button onclick="startSpin()">Spin</button>
+        <button onclick="testSpin()">🧪 Test Spin</button>
+      </div>
+
+      <!-- SPINNER (HIDDEN FIRST) -->
+      <div id="spinnerBox" class="hidden">
+        <div class="pointer">▼</div>
+        <div id="spinner"></div>
+      </div>
+
+      <p id="result"></p>
+    </div>
+
+    <!-- DISCORD -->
+    <div id="discord" class="page hidden">
+      <h2>Discord</h2>
+      <p>Join our Discord server for rewards!</p>
+      <a href="#" target="_blank">Join Discord</a>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="about" class="page hidden">
+      <h2>About Server</h2>
+      <p>This is a Minecraft rewards system.</p>
+    </div>
+
+  </div>
 </div>
 
 <script src="script.js"></script>
