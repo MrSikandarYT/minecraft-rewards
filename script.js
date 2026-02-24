@@ -1,62 +1,71 @@
-const wheel = document.getElementById("wheel");
-const message = document.getElementById("message");
-
 let spinning = false;
 
 const rewards = [
-  "Netkit",
   "Try Again",
-  "100k",
-  "1-Hit Sword",
-  "Try Again",
-  "Try Again"
+  "100 Coins",
+  "Diamond",
+  "Iron Kit",
+  "Netherite Kit",
+  "VIP Rank"
 ];
 
-// ===== DAILY LOCK =====
-function dailyReward() {
-  const user = document.getElementById("username").value.trim();
-  if (!user) return alert("Enter username");
-
-  const today = new Date().toDateString();
-  if (localStorage.getItem("daily") === today) {
-    message.innerText = "⏳ Daily reward already claimed";
-    return;
-  }
-
-  localStorage.setItem("daily", today);
-  message.innerText = "🎁 Daily reward claimed — use /daily";
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById(page).classList.remove("hidden");
 }
 
-// ===== SPIN =====
-function spinReward() {
-  if (spinning) return;
-
-  const user = document.getElementById("username").value.trim();
+function dailyReward() {
+  const user = username.value.trim();
   if (!user) return alert("Enter username");
 
   const today = new Date().toDateString();
-  if (localStorage.getItem("spin") === today) {
-    message.innerText = "⏳ Spin already used today";
+  const key = "daily_" + user;
+
+  if (localStorage.getItem(key) === today) {
+    result.innerText = "⏳ Daily reward already claimed";
     return;
   }
 
+  localStorage.setItem(key, today);
+  result.innerText = "✅ You got 50 coins!";
+}
+
+function startSpin() {
+  if (spinning) return;
+
+  const user = username.value.trim();
+  if (!user) return alert("Enter username");
+
+  const today = new Date().toDateString();
+  const key = "spin_" + user;
+
+  if (localStorage.getItem(key) === today) {
+    result.innerText = "⏳ You already spun today";
+    return;
+  }
+
+  localStorage.setItem(key, today);
+  spinNow(false);
+}
+
+function testSpin() {
+  spinNow(true);
+}
+
+function spinNow(isTest) {
   spinning = true;
-  localStorage.setItem("spin", today);
+  result.innerText = "";
 
-  // weighted chance (1-hit sword very rare)
-  let index;
-  const r = Math.random();
-  if (r < 0.01) index = 3; // 1%
-  else index = Math.floor(Math.random() * rewards.length);
+  spinnerBox.classList.remove("hidden");
 
-  const degreesPer = 360 / rewards.length;
-  const rotation =
-    360 * 5 + (rewards.length - index) * degreesPer;
+  const spin = Math.floor(Math.random() * rewards.length);
+  const angle = 360 * 5 + spin * (360 / rewards.length);
 
-  wheel.style.transform = `rotate(${rotation}deg)`;
+  spinner.style.transform = `rotate(${angle}deg)`;
 
   setTimeout(() => {
-    message.innerText = `🎉 You won: ${rewards[index]} — use /spin`;
+    result.innerText =
+      (isTest ? "🧪 TEST: " : "🎉 You won: ") + rewards[spin];
     spinning = false;
   }, 4000);
 }
