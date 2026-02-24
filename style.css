@@ -1,11 +1,97 @@
 body {
+  margin: 0;
+  font-family: Arial, sans-serif;
   background: #0f172a;
   color: white;
-  font-family: Arial;
-  text-align: center;
 }
 
-input, button {
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background: #020617;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.sidebar button {
   padding: 10px;
-  margin: 5px;
+  background: #22c55e;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.sidebar button:hover {
+  background: #16a34a;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.reward-option {
+  margin-top: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: #22c55e;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover:enabled {
+  background: #16a34a;
+}
+
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+
+canvas {
+  display: block;
+  border-radius: 50%;
+  background: #1e293b;
+}
+
+.pointer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -180%); /* pointer at top of wheel */
+  font-size: 30px;
+  color: red;
+  pointer-events: none;
+  font-weight: bold;
 }
