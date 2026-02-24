@@ -4,7 +4,8 @@ body {
   font-family: Arial, sans-serif;
   background:#0f172a;
   color:white;
-  display:fl
+  display:flex;
+  justify-content:center;
   align-items:flex-start;
   min-height:100vh;
 }
