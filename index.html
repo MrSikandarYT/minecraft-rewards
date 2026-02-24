@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft Rewards</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>🎁 Minecraft Rewards</h1>
+
+  <input id="username" placeholder="Minecraft Username">
+
+  <div class="buttons">
+    <button onclick="dailyReward()">🎁 Daily Reward</button>
+    <button onclick="spinReward()">🎡 Spin</button>
+  </div>
+
+  <div class="wheel-box">
+    <div class="pointer">▼</div>
+    <div id="wheel" class="wheel">
+      <div class="slice">Netkit</div>
+      <div class="slice">Try Again</div>
+      <div class="slice">100k</div>
+      <div class="slice rare">1-Hit Sword</div>
+      <div class="slice">Try Again</div>
+      <div class="slice">Try Again</div>
+    </div>
+  </div>
+
+  <p id="message"></p>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
