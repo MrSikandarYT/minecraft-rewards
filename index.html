@@ -12,25 +12,22 @@
 
   <input id="username" placeholder="Minecraft Username">
 
-  <div class="buttons">
-    <button onclick="dailyReward()">🎁 Daily Reward</button>
-    <button onclick="spinReward()">🎡 Spin</button>
-  </div>
+  <button onclick="dailyReward()">🎁 Daily Reward</button>
+  <button onclick="spinReward()">🎡 Spin</button>
 
-  <div class="wheel-box">
+  <div class="wheel-wrapper">
     <div class="pointer">▼</div>
     <div id="wheel" class="wheel">
-      <div class="slice">Netkit</div>
-      <div class="slice">Try Again</div>
-      <div class="slice">100k</div>
-      <div class="slice rare">1-Hit Sword</div>
-      <div class="slice">Try Again</div>
-      <div class="slice">Try Again</div>
+      <div class="segment">Netkit</div>
+      <div class="segment">Try Again</div>
+      <div class="segment">100k</div>
+      <div class="segment rare">1-Hit Sword</div>
+      <div class="segment">Try Again</div>
+      <div class="segment">Try Again</div>
     </div>
   </div>
 
   <p id="message"></p>
-
 </div>
 
 <script src="script.js"></script>
