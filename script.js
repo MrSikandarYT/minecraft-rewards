@@ -10,7 +10,8 @@ const wheelCanvas = document.getElementById("wheel");
 const ctx = wheelCanvas.getContext("2d");
 
 // API URL
-const API_URL = "https://nodejs.sikandaralisika.repl.co/reward";
+const API_URL = "https://MC-reward.sikandaralisika.repl.co/reward"; // your Replit URL
+const SECRET_KEY = "Sikandar123"; // your secret key
 
 let spinning = false;
 let rotation = 0;
@@ -91,7 +92,7 @@ dailyBtn.addEventListener("click",()=>{
   fetch(API_URL,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({username:user,reward:"Daily Reward Coins"})
+    body: JSON.stringify({username:user,reward:"Daily Reward Coins", key:SECRET_KEY})
   }).then(r=>r.json()).then(data=>{
     if(data.success) console.log("Daily reward sent to Discord");
   }).catch(console.error);
@@ -142,7 +143,7 @@ spinBtn.addEventListener("click",()=>{
     fetch(API_URL,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({username:user,reward:rewardText})
+      body: JSON.stringify({username:user,reward:rewardText, key:SECRET_KEY})
     }).then(r=>r.json()).then(data=>{
       if(data.success) console.log("Reward sent to Discord");
     }).catch(console.error);
