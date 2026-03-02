@@ -1,58 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Minecraft Rewards</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+// ------------------- Page Switching -------------------
+function showPage(pageId) {
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
 
-<div class="container">
-  <!-- Left Menu -->
-  <div class="menu">
-    <button onclick="showPage('rewards')">🎁 Rewards</button>
-    <button onclick="showPage('discord')">💬 Discord</button>
-    <button onclick="showPage('about')">ℹ️ About</button>
-  </div>
+// ------------------- Spinner Setup -------------------
+const wheel = document.getElementById('wheel');
+const spinBtn = document.getElementById('spinBtn');
+const wheelContainer = document.getElementById('wheelContainer');
+const resultText = document.getElementById('result');
 
-  <!-- Main Content -->
-  <div class="content">
-    <div id="welcome" class="page active">
-      <h2>Welcome!</h2>
-      <p>Please select an option from the menu.</p>
-    </div>
+const rewards = ['Diamond', 'Gold', 'Iron', 'Emerald', 'Netherite', 'Potion', 'Coin', 'Nothing'];
+const colors = ['#ff6666','#66ff66','#6666ff','#ffff66','#66ffff','#ff66ff','#ff9966','#99ff66'];
 
-    <div id="rewards" class="page">
-      <h2>Rewards</h2>
-      <input id="username" placeholder="Minecraft Username">
-      <div class="buttons">
-        <button id="dailyBtn">🎁 Daily Reward</button>
-        <button id="showSpinnerBtn">🎡 Spinner</button>
-        <button id="resetBtn">🔄 Reset Spinner</button>
-      </div>
+let spinning = false;
 
-      <div id="wheelContainer">
-        <div class="pointer">▼</div>
-        <canvas id="wheel" width="400" height="400"></canvas>
-        <button id="spinBtn">Spin</button>
-      </div>
+// Draw wheel
+const ctx = wheel.getContext('2d');
+function drawWheel() {
+  const size = rewards.length;
+  const angle = (2 * Math.PI) / size;
 
-      <p id="result"></p>
-    </div>
+  for (let i = 0; i < size; i++) {
+    ctx.beginPath();
+    ctx.moveTo(200,200);
+    ctx.arc(200,200,200,i*angle,(i+1)*angle);
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+    ctx.stroke();
 
-    <div id="discord" class="page">
-      <h2>Discord</h2>
-      <p>Join our Discord server for rewards!</p>
-      <a href="#" target="_blank">Join Discord</a>
-    </div>
+    // Text
+    ctx.save();
+    ctx.translate(200,200);
+    ctx.rotate(i*angle + angle/2);
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#000";
+    ctx.font = "16px Arial";
+    ctx.fillText(rewards[i], 190, 0);
+    ctx.restore();
+  }
+}
+drawWheel();
 
-    <div id="about" class="page">
-      <h2>About Server</h2>
-      <p>This is a Minecraft rewards system.</p>
-    </div>
-  </div>
-</div>
+// ------------------- Spinner Logic -------------------
+spinBtn.addEventListener('click', () => {
+  if (spinning) return;
+  spinning = true;
+  resultText.textContent = '';
 
-<script src="script.js"></script>
-</body>
-</html>
+  const spins = Math.floor(Math.random() * 3) + 3; // 3-5 spins
+  const rewardIndex = Math.floor(Math.random() * rewards.length);
+  const totalRotation = (360 * spins) + (rewardIndex * (360 / rewards.length));
+
+  let current = 0;
+  const interval = setInterval(() => {
+    current += 10;
+    wheel.style.transform = `rotate(${current}deg)`;
+    if (current >= totalRotation) {
+      clearInterval(interval);
+      spinning = false;
+      const rewardWon = rewards[rewardIndex];
+      resultText.textContent = `You won: ${rewardWon}!`;
+      sendRewardToBot(rewardWon);
+    }
+  }, 10);
+});
+
+// ------------------- Send Reward to Replit Bot -------------------
+async function sendRewardToBot(reward) {
+  const username = document.getElementById('username').value.trim();
+  if (!username) {
+    alert('Please enter your Minecraft username!');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://MC-reward.sikandaralisika.repl.co/reward', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: username,
+        reward: reward,
+        key: 'Sikandar123'
+      })
+    });
+
+    const data = await response.json();
+    alert(data.message);
+  } catch (err) {
+    console.error(err);
+    alert('Error sending reward to bot.');
+  }
+}
+
+// ------------------- Daily Reward Button (Optional) -------------------
+document.getElementById('dailyBtn').addEventListener('click', () => {
+  alert('Daily reward coming soon!');
+});
+
+// ------------------- Show/Hide Spinner -------------------
+document.getElementById('showSpinnerBtn').addEventListener('click', () => {
+  wheelContainer.style.display = 'block';
+});
+document.getElementById('resetBtn').addEventListener('click', () => {
+  wheel.style.transform = 'rotate(0deg)';
+  resultText.textContent = '';
+});
