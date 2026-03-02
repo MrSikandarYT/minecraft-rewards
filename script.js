@@ -10,7 +10,7 @@ const wheelCanvas = document.getElementById("wheel");
 const ctx = wheelCanvas.getContext("2d");
 
 // API URL
-const API_URL = "https://990bcd1e-2e9d-4b31-95ae-d02835f0239c-00-1qirfplstlop.pike.replit.dev/"; // your Replit URL
+const API_URL = "https://990bcd1e-2e9d-4b31-95ae-d02835f0239c-00-1qirfplstlop.pike.replit.dev/reward"; // your Replit URL
 const SECRET_KEY = "Sikandar123"; // your secret key
 
 let spinning = false;
